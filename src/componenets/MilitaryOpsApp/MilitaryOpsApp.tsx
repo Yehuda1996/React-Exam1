@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputForm from '../InputForm/InputForm';
 import './MilitaryOpsApp.css';
 import { Mission, MissionStatus, MissionPriority } from '../../types';
-import { createMission } from '../../apiMissions';
+import { createMission, getMissions } from '../../apiMissions';
+import MissionsList from '../MissionsList/MissionsList';
 
 const MilitaryOpsApp: React.FC = () => {
     const [newMission, setNewMission] = useState<Mission>({
@@ -19,11 +20,23 @@ const MilitaryOpsApp: React.FC = () => {
         try {
             const createdMission = await createMission(newMission);
             setMissions([...missions, createdMission]);
-            setNewMission({ name: '', status: MissionStatus.pending, priority: MissionPriority.low, description: '' });
         } catch (error) {
             console.error("Error creating mission:", error);
         }
+        setNewMission({ name: '', status: MissionStatus.pending, priority: MissionPriority.low, description: '' });
     };
+
+    useEffect(() => {
+        const loadMissions = async () => {
+            try {
+                const data = await getMissions();
+                setMissions(data);
+            } catch (error) {
+                throw new Error("error loading missions")
+            }
+        }
+        loadMissions();
+    }, [])
 
     return (
         <div className='MilitaryOpsApp'>
@@ -32,7 +45,7 @@ const MilitaryOpsApp: React.FC = () => {
                 <InputForm mission={newMission} setMission={setNewMission} handleAddMission={handleAddMission} />
             </header>
             <main>
-                
+                <MissionsList missions={missions}/>
             </main>
         </div>
     );
