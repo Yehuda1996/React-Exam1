@@ -10,6 +10,7 @@ export enum MissionPriority {
 }
 
 export interface Mission {
+    _id: string
     name: string;
     status: MissionStatus;
     priority: MissionPriority;

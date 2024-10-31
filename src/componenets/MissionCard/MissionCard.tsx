@@ -4,16 +4,17 @@ import { Mission } from '../../types'
 
 interface MissionCardProps {
     mission: Mission
+    handleDelete: (id: string) => void
 }
 
-const MissionCard: React.FC<MissionCardProps> = ({mission}) => {
+const MissionCard: React.FC<MissionCardProps> = ({mission, handleDelete}) => {
   return (
-    <div>
+    <div className='missionCard'>
         <span>{mission.name}</span>
         <span>{mission.status}</span>
         <span>{mission.priority}</span>
         <span>{mission.description}</span>
-        <button>Delete</button>
+        <button onClick={() => (handleDelete(mission._id))}>Delete</button>
         <button>Progress</button>
     </div>
   )

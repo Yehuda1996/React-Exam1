@@ -28,11 +28,7 @@ export const createMission = async (newMission: Mission) : Promise<Mission> => {
 
 export const updateMission = async (id: string) : Promise<Mission> => {
     try {
-        const response = await axios.post(`${BASE_URL}/:id`, {
-            params: {
-                _id: id
-            },
-        })
+        const response = await axios.post(`${BASE_URL}/${id}`)
         return response.data
     } catch (error) {
         throw new Error("Error creating mission");
@@ -41,12 +37,12 @@ export const updateMission = async (id: string) : Promise<Mission> => {
 
 export const deleteMission = async (id: string) : Promise<void> => {
     try {
-        const response = await axios.post(`${BASE_URL}/${id}`, {
+        const response = await axios.delete(`${BASE_URL}/${id}`, {
             params: {
                 _id: id
             },
         })
-        return response.data
+        return response.data 
     } catch (error) {
         throw new Error("Error creating mission");
     }

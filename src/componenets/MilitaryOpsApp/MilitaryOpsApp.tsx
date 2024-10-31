@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import InputForm from '../InputForm/InputForm';
 import './MilitaryOpsApp.css';
 import { Mission, MissionStatus, MissionPriority } from '../../types';
-import { createMission, getMissions } from '../../apiMissions';
+import { createMission, deleteMission, getMissions } from '../../apiMissions';
 import MissionsList from '../MissionsList/MissionsList';
 
 const MilitaryOpsApp: React.FC = () => {
     const [newMission, setNewMission] = useState<Mission>({
+        _id: '',
         name: '',
         status: MissionStatus.pending,
         priority: MissionPriority.low,
@@ -23,7 +24,7 @@ const MilitaryOpsApp: React.FC = () => {
         } catch (error) {
             console.error("Error creating mission:", error);
         }
-        setNewMission({ name: '', status: MissionStatus.pending, priority: MissionPriority.low, description: '' });
+        setNewMission({_id: '', name: '', status: MissionStatus.pending, priority: MissionPriority.low, description: '' });
     };
 
     useEffect(() => {
@@ -38,6 +39,17 @@ const MilitaryOpsApp: React.FC = () => {
         loadMissions();
     }, [])
 
+    const handleDelete = async (id:string) => {
+        try {
+            console.log(id);
+            
+            await deleteMission(id);
+            setMissions(prevMissions => prevMissions.filter(mission => mission._id !== id));
+        } catch (error) {
+            throw new Error("error")
+        }
+    }
+
     return (
         <div className='MilitaryOpsApp'>
             <header className='header'>
@@ -45,7 +57,7 @@ const MilitaryOpsApp: React.FC = () => {
                 <InputForm mission={newMission} setMission={setNewMission} handleAddMission={handleAddMission} />
             </header>
             <main>
-                <MissionsList missions={missions}/>
+                <MissionsList missions={missions} handleDelete={handleDelete}/>
             </main>
         </div>
     );
