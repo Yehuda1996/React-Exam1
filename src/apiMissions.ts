@@ -28,7 +28,11 @@ export const createMission = async (newMission: Mission) : Promise<Mission> => {
 
 export const updateMission = async (id: string) : Promise<Mission> => {
     try {
-        const response = await axios.post(`${BASE_URL}/${id}`)
+        const response = await axios.post(`${BASE_URL}/progress/${id}`, {
+            params: {
+                _id: id
+            }
+        })
         return response.data
     } catch (error) {
         throw new Error("Error creating mission");

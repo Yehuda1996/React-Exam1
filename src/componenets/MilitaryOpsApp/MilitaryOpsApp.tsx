@@ -50,15 +50,29 @@ const MilitaryOpsApp: React.FC = () => {
 
     const handleStatusUpdate = async (id: string) => {
         try {
-            await updateMission(id);
+            await updateMission(id); 
+
             setMissions((prevMissions) =>
-                prevMissions.map((mission) =>
-                    mission._id === id ? { ...mission} : mission
-                ))
+                prevMissions.map((mission) => {
+                    if (mission._id === id) {
+                        return {
+                            ...mission,
+                            status: 
+                                mission.status === MissionStatus.pending 
+                                    ? MissionStatus.inProgress 
+                                    : mission.status === MissionStatus.inProgress 
+                                        ? MissionStatus.completed 
+                                        : MissionStatus.completed 
+                        };
+                    }
+                    return mission;
+                })
+            );
         } catch (error) {
-            throw new Error("error")
+            throw new Error("Error updating mission status");
         }
-    }
+    };
+    
 
     return (
         <div className='MilitaryOpsApp'>

@@ -1,0 +1,26 @@
+.missionCard {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s;
+}
+
+.missionCard span {
+    margin: 5px 0;
+}
+
+
+.missionCard.pending {
+    background-color: #f00e0efc; 
+}
+
+.missionCard.inProgress {
+    background-color: #f0893afd; 
+}
+
+.missionCard.completed {
+    background-color: #24e124; 
+}
