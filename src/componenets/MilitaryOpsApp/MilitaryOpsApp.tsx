@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import InputForm from '../InputForm/InputForm';
 import './MilitaryOpsApp.css';
 import { Mission, MissionStatus, MissionPriority } from '../../types';
-import { createMission, deleteMission, getMissions } from '../../apiMissions';
+import { createMission, deleteMission, getMissions, updateMission } from '../../apiMissions';
 import MissionsList from '../MissionsList/MissionsList';
 
 const MilitaryOpsApp: React.FC = () => {
@@ -41,10 +41,20 @@ const MilitaryOpsApp: React.FC = () => {
 
     const handleDelete = async (id:string) => {
         try {
-            console.log(id);
-            
             await deleteMission(id);
             setMissions(prevMissions => prevMissions.filter(mission => mission._id !== id));
+        } catch (error) {
+            throw new Error("error")
+        }
+    }
+
+    const handleStatusUpdate = async (id: string) => {
+        try {
+            await updateMission(id);
+            setMissions((prevMissions) =>
+                prevMissions.map((mission) =>
+                    mission._id === id ? { ...mission} : mission
+                ))
         } catch (error) {
             throw new Error("error")
         }
@@ -57,7 +67,7 @@ const MilitaryOpsApp: React.FC = () => {
                 <InputForm mission={newMission} setMission={setNewMission} handleAddMission={handleAddMission} />
             </header>
             <main>
-                <MissionsList missions={missions} handleDelete={handleDelete}/>
+                <MissionsList missions={missions} handleDelete={handleDelete} handleStatusUpdate={handleStatusUpdate}/>
             </main>
         </div>
     );

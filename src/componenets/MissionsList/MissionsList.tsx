@@ -6,14 +6,16 @@ import './MissionsList.css'
 interface MissionsListProps {
     missions: Mission[],
     handleDelete: (id:string) => void
+    handleStatusUpdate: (id: string) => void
 }
 
-const MissionsList: React.FC<MissionsListProps> = ({missions, handleDelete}) => {
+const MissionsList: React.FC<MissionsListProps> = ({missions, handleDelete, handleStatusUpdate}) => {
   return (
     <div className='missionsList'>
         <h3>Missions</h3>
         {missions.map((mission: Mission) => {
-            return <MissionCard mission={mission} key={mission._id} handleDelete={handleDelete}/>
+            return <MissionCard mission={mission} key={mission._id} handleDelete={handleDelete}
+            handleStatusUpdate={handleStatusUpdate}/>
         })}
     </div>
   )
